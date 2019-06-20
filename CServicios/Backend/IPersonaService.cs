@@ -27,6 +27,6 @@ namespace ServiciosBancarios.Backend
 
 
         [OperationContract]
-        bool login(string usuario, string password);
+        bool Login(string usuario, string password);
     }
 }
