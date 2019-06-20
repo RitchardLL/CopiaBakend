@@ -396,6 +396,10 @@ namespace ServiciosBancarios
             return BLPersona.ObtenerTodos();
         }
 
+        public bool Login(string usuario,string password)
+        {
+            return BLPersona.login(usuario, password);
+        }
         #endregion
 
         #region [ Roles ]

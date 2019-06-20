@@ -24,5 +24,9 @@ namespace ServiciosBancarios.Backend
 
         [OperationContract]
         List<PersonaModel> Persona_ObtenerTodos();
+
+
+        [OperationContract]
+        bool login(string usuario, string password);
     }
 }

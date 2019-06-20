@@ -407,45 +407,40 @@ namespace CDatos.Manager
         }
         #endregion
 
-        public bool Valida(int aId)
+        public bool ValidarUsuario(string usuario, string password)
         {
+            int acceso = 0;
+
             try
             {
                 using (var connection = Util.ConnectionFactory.conexion())
                 {
                     connection.Open();
 
-                    SqlTransaction sqlTran = connection.BeginTransaction();
-
                     SqlCommand command = connection.CreateCommand();
 
-                    command.Transaction = sqlTran;
-
-                    command.Parameters.AddWithValue("@pMode", 6);
-
-                    command.Parameters.AddWithValue("@Id", aId);
-
+                    command.Parameters.AddWithValue("@Usuario", usuario);
+                    command.Parameters.AddWithValue("@Password", password);
 
                     command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "sp_Persona";
-                    int afectados = command.ExecuteNonQuery();
 
-                    // Commit the transaction.
-                    sqlTran.Commit();
+                    command.CommandText = "ValidaUsuario";
 
-                    connection.Close();
-                    connection.Dispose();
-
-                    if (afectados > 0)
+                    SqlDataReader reader = command.ExecuteReader();
+                    acceso = command.ExecuteNonQuery();
+                    if (acceso > 0)
                         return true;
                     else
                         return false;
+
                 }
+
             }
             catch (Exception)
             {
                 return false;
             }
+
         }
 
         public List<ComponenteModel> PermisosComponentes(int idUsuario)
@@ -507,10 +502,45 @@ namespace CDatos.Manager
             }
             catch (Exception)
             {
-                return PersonaModellist;
+                return listCom;
             }
 
         }
+
+        public bool CambiarContraseña(string Usuario, string Password, string NewPassword)
+        {
+            try
+            {
+                using (var connection = Util.ConnectionFactory.conexion())
+                {
+                    connection.Open();
+
+                    SqlCommand command = connection.CreateCommand();
+
+                    command.Parameters.AddWithValue("@Usuario", Usuario);
+                    command.Parameters.AddWithValue("@Password", Password);
+                    command.Parameters.AddWithValue("@NewPassword", NewPassword);
+
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.CommandText = "spCambiarContrasena";
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    int afectados = command.ExecuteNonQuery();
+                    if (afectados > 0)
+                        return true;
+                    else
+                        return false;
+
+                }
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
 
     }
 

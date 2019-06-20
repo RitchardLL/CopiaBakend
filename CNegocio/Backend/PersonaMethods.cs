@@ -40,5 +40,13 @@ namespace CNegocio.Backend
         {
             return ADPersonaManager.PersonaModelSelectAll();
         }
+
+        public bool login(string usuario,string password)
+        {
+            CDatos.Manager.ManagerPersonaModel CDPersona = new ManagerPersonaModel();
+            bool acceso = CDPersona.ValidarUsuario(usuario, password);
+            return acceso;
+        }
+
     }
 }

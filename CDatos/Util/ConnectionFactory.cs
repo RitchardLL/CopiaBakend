@@ -9,7 +9,7 @@ namespace CDatos.Util
 {
     public static class ConnectionFactory
     {
-        private const string cadenaconexion = "";
+        private const string cadenaconexion = "data source = .;initial catalog = test;integrated security = true";
 
         public static SqlConnection conexion()
         {
