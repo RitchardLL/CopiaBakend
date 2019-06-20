@@ -448,6 +448,70 @@ namespace CDatos.Manager
             }
         }
 
+        public List<ComponenteModel> PermisosComponentes(int idUsuario)
+        {
+            List<ComponenteModel> listCom = null;
+            try
+            {
+                using (var connection = Util.ConnectionFactory.conexion())
+                {
+                    connection.Open();
+
+                    SqlCommand command = connection.CreateCommand();
+
+                    command.Parameters.AddWithValue("@Usuario", idUsuario);
+
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.CommandText = "sp_ObtenerComponentesUsuario";
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+
+                            int Id = (int)(reader["Id"]);
+                            string Nombre = (string)(reader["Nombre"]);
+                            string Descripcion = (string)(reader["[Descripcion]"]);
+                            int? Id_aplicacion = (reader["[Id_aplicacion]"]) as int?;
+                            bool Estado = (bool)(reader["[Estado]"]);
+                            string Codigo = (string)(reader["[Codigo]"]);
+                            int? Id_Componente = (reader["[Id_Componente]"]) as int?;
+                            string USUARIO_CREADOR = (string)(reader["[USUARIO_CREADOR]"]);
+                            DateTime FECHA_CREACION = (DateTime)(reader["[FECHA_CREACION]"]);
+                            string USUARIO_MODIFICADOR = (string)(reader["[USUARIO_MODIFICADOR]"]);
+                            DateTime? FECHA_MODIFICACION = (reader["[FECHA_MODIFICACION]"]) as DateTime?;
+
+                            listCom.Add(new ComponenteModel
+                            {
+                                Id = Id,
+                                Nombre = Nombre,
+                                Descripcion = Descripcion,
+                                Id_aplicacion = Id_aplicacion,
+                                Estado = Estado,
+                                Codigo = Codigo ,
+                                Id_componente = Id_Componente,
+                                Fecha_creacion = FECHA_CREACION,
+                                Fecha_modificacion = FECHA_MODIFICACION,
+                                Usuario_creador = USUARIO_CREADOR,
+                                Usuario_modificador = USUARIO_MODIFICADOR,
+
+                            });
+                        }
+                    }
+                }
+
+                return listCom;
+            }
+            catch (Exception)
+            {
+                return PersonaModellist;
+            }
+
+        }
+
     }
 
 }
