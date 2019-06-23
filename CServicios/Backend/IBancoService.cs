@@ -10,7 +10,7 @@ namespace ServiciosBancarios.Backend
 {
     public interface IBancoService
     {
-        //cambio
+        //cambioss
         [OperationContract]
         bool Banco_Crear(BancoModel aBanco);
 
